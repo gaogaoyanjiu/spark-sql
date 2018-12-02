@@ -4,6 +4,7 @@ import java.sql.DriverManager
 
 /**
  *  通过JDBC的方式访问
+  *  注意事项：在使用jdbc开发时，一定要先启动thriftserver
  */
 object SparkSQLThriftServerApp {
 
