@@ -1,21 +1,18 @@
 package com.tdtk.spark
 
-import org.apache.spark.SparkContext
 import org.apache.spark.sql.SQLContext
+import org.apache.spark.{SparkConf, SparkContext}
 
-import org.apache.spark.SparkConf
 
 /**
- * SQLContext的使用:
- * 注意：IDEA是在本地，而测试数据是在服务器上 ，能不能在本地进行开发测试的？
- *
- */
+  * SQLContext的使用:
+  * 注意：IDEA是在本地，而测试数据是在服务器上 ，能不能在本地进行开发测试的？
+  *
+  */
 object SQLContextApp {
 
   def main(args: Array[String]) {
-
     val path = args(0)
-
     //1)创建相应的Context
     val sparkConf = new SparkConf()
 
@@ -25,12 +22,14 @@ object SQLContextApp {
     val sc = new SparkContext(sparkConf)
     val sqlContext = new SQLContext(sc)
 
-    //2)相关的处理: json
+    //2)相关的处理: json  {"name":"zhangsan","age":32}{"name":"lisi","age":24}{"name":"wangwu","age":28}  people.json
+    // win10的文件，直接D://data/people.json就可以
+    //linux的文件，/home/hadoop/data/people.json
+    //mac的文件，file:///D://data/people.json
+    //  val people = sqlContext.read.format("json").load("D://data/people.json")
     val people = sqlContext.read.format("json").load(path)
     people.printSchema()
     people.show()
-
-
 
     //3)关闭资源
     sc.stop()
