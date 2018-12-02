@@ -6,6 +6,8 @@ import org.apache.spark.{SparkConf, SparkContext}
 /**
  * HiveContext的使用
  * 使用时需要通过--jars 把mysql的驱动传递到classpath
+  *
+  * 粘贴到spark-shell执行 开发环境不能运行
  */
 object HiveContextApp {
 

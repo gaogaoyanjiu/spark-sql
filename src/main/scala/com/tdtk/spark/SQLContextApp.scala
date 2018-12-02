@@ -28,6 +28,10 @@ object SQLContextApp {
     //mac的文件，file:///D://data/people.json
     //  val people = sqlContext.read.format("json").load("D://data/people.json")
     val people = sqlContext.read.format("json").load(path)
+
+//  save(路径)
+//    people.write.format("json").save("D://data/output")
+    people.write.format("parquet").save("D://data/output")
     people.printSchema()
     people.show()
 
