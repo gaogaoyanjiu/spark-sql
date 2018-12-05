@@ -9,7 +9,7 @@ object SparkStatCleanJob {
 
   def main(args: Array[String]) {
     val spark = SparkSession.builder().appName("SparkStatCleanJob")
-//      .config("spark.sql.parquet.compression.codec","gzip")
+//      .config("spark.sql.parquet.compression.codec","gzip")  //设置压缩格式
       .master("local[2]").getOrCreate()
 
 //    val accessRDD = spark.sparkContext.textFile("/Users/rocky/data/imooc/access.log")
