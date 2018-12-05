@@ -29,7 +29,7 @@ object SparkStatCleanJob {
 //    控制文件输出的大小： coalesce
     accessDF.coalesce(1).write.format("parquet").mode(SaveMode.Overwrite)
 //    .partitionBy("day").save("/Users/rocky/data/imooc/clean2")
-      .partitionBy("day").save("D://data/clean2")
+    //  .partitionBy("day").save("D://data/clean2")
 
     spark.stop
   }

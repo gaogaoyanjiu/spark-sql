@@ -11,7 +11,7 @@ object MySQLUtils {
     * 获取数据库连接
     */
   def getConnection() = {
-    DriverManager.getConnection("jdbc:mysql://localhost:3306/imooc_project?user=root&password=root")
+    DriverManager.getConnection("jdbc:mysql://localhost:3306/tdtk_project?user=root&password=root")
   }
 
   /**
