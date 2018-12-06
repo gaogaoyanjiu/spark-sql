@@ -1,0 +1,126 @@
+Linux系统有系统时间和硬件时间之分：
+
+系统时间: 一般说来就是我们执行 date命令看到的时间，linux系统下所有的时间调用（除了直接访问硬件时间的命令）都是使用的这个时间。
+
+硬件时间:主板上BIOS中的时间，由主板电池供电来维持运行，系统开机时要读取这个时间，并根据它来设定系统时间（注意：系统启动时根据硬件时间设定系统时间的过程可能存在时区换算，这要视具体的系统及相关设置而定）。
+
+
+1、查看当前系统时间date：
+
+[root@surfer ~]#date
+
+2018年06月 26日星期二 10:09:21 CST
+
+
+2、设置系统时间date -s +时间
+
+[root@surfer ~]#date -s 10:10:10
+
+2018年06月 26日星期二 10:10:10 CST
+
+
+
+3、设置系统时间时，如果还需要设置日期，则要将日期与时间值用双引号包裹起来
+
+[root@surfer ~]#date -s "2018/8/8 10:00:00"
+
+2018年08月 08日星期三 10:00:00 CST
+
+
+4、查看硬件时间用hwclock或者clock命令：
+
+[root@surfer ~]#hwclock
+
+2018年06月26日 星期二 10时13分02秒  -0.805503 秒
+
+[root@surfer ~]#clock
+
+2018年06月26日 星期二 10时13分07秒  -0.507462 秒
+
+
+5、将硬件时间写入到系统时间：
+
+[root@surfer ~]#hwclock -s
+
+
+6、将系统时间写入到硬件时间
+
+[root@surfer ~]#hwclock -w
+
+
+7、时间同步，Linux系统需安装ntpdate
+
+检查是否安装了ntpdate : rpm -qa | grep ntpdate
+
+如果没有安装则运行如下命令：yum install ntpdate
+
+时间同步命令：ntpdate  www.pool.net.org   ，其中 www.pool.net.org 是互联网中标准时间服务器
+
+
+8、contab命令
+
+通过vi /etc/crontab命令可以看到定时任务的书写格式
+
+[root@surfer ~]# vi/etc/crontab
+
+SHELL=/bin/bash      #SHELL变量指定了系统要使用哪个shell
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin    #PATH变量指定了系统执行命令的路径
+
+MAILTO=root    #MAILTO变量指定了crond的任务执行信息将通过电子邮件发送给root用户，如果MAILTO变     量的值为空，则表示不发送任务执行信息给用户
+
+
+# For details seeman 4 crontabs
+
+
+# Example of jobdefinition:
+
+# .---------------- minute (0 - 59)   #分钟
+
+# |  .------------- hour (0 -23)   #小时
+
+# |  |  .---------- day of month (1 - 31)  #日期
+
+# |  |  | .------- month (1 - 12) OR jan,feb,mar,apr … #月份
+
+# |  |  | |  .---- day of week (0 - 6)(Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat  #周
+
+# |  | |  |  |
+
+# *  * *  *  * user-name command to be executed
+
+在以上各个字段中，还可以使用以下特殊字符：
+
+星号（*）：代表所有可能的值，例如month字段如果是星号，则表示在满足其它字段的制约条件后每月都执行该命令操作。
+
+逗号（,）：可以用逗号隔开的值指定一个列表范围，例如，“1,2,5,7,8,9”
+
+横杠（-）：可以用整数之间的横杠表示一个整数范围，例如“2-6”表示“2,3,4,5,6”
+
+斜线（/）：可以用斜线指定时间的间隔频率，例如“0-23/2”表示每两小时执行一次。同时斜线可以和星号一起使用，例如*/10，如果用在minute字段，表示每十分钟执行一次。
+
+crontab -l  ：列出当前用户的crontab文件内容
+
+* * * * */usr/local/gse/agent/bin/gsectl watch
+
+crontab -e  ：编辑当前用户的crontab文件内容
+
+
+[root@surfer data]#crontab -e
+
+*/1 * * * * echo"hello world">>/data/code.txt
+
+~
+
+在这里我添加了一个按照一分钟一次的定时任务 */1 * * * * echo "hello world" >>/data/code.txt  ：意思是每一分钟打印一次hello world，并且重定向到了/data/code.txt文件里面，几分钟过后查看code.txt，出现了如下内容，说明这个定时任务已经开始执行
+
+[root@surfer data]# cat code.txt
+hello world
+hello world
+hello world
+hello world
+hello world
+hello world
+hello world
+hello world
+hello world
