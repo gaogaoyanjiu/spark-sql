@@ -19,7 +19,6 @@ public class Singleton {
         return single;
     }
     
-    
     public static void main(String [] args){
     
         Singleton singleton = new Singleton();
